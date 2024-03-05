@@ -17,7 +17,6 @@ else:
                 cnt_x += 1
                 if cnt_x == m :
                     happy_arr += 1
-                    print(i,j)
                     break
             
         
@@ -32,7 +31,6 @@ else:
                 cnt_y += 1
                 if cnt_y == m:
                     happy_arr += 1
-                    print(j,i)
                     break
                 
     print(happy_arr)
