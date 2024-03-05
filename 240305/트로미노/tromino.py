@@ -8,7 +8,7 @@ max_sum = 0
 
 def check_range(x,y):
     global n,m
-    if 0 <= x < n and 0 <= y < n:
+    if 0 <= x < n and 0 <= y < m:
         return True
     else:
         return False
