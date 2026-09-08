@@ -1,0 +1,149 @@
+name: 아침 복습 카드
+
+on:
+  schedule:
+    # GitHub Actions 의 cron 은 정각에 몰려 지연되므로 07:45 KST 를 노려서 잡는다.
+    # 22:45 UTC = 07:45 KST (다음 날)
+    - cron: "45 22 * * *"
+  workflow_dispatch:
+    inputs:
+      provider:
+        description: "카드를 만들 CLI. codex 또는 claude. 비우면 리포지터리 변수, 그것도 없으면 codex."
+        required: false
+        type: string
+        default: ""
+
+# 동시 실행 방지 — 상태 파일과 codex 자격증명이 꼬이지 않게
+concurrency:
+  group: daily-review
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    env:
+      # 우선순위: 수동 실행 입력 > 리포지터리 변수 > codex
+      REVIEW_PROVIDER: ${{ inputs.provider || vars.REVIEW_PROVIDER || 'codex' }}
+
+    steps:
+      - name: 레포 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Node 설치
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Python 설치
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # ── codex 경로 ────────────────────────────────────────────────
+      - name: Codex CLI 설치
+        if: env.REVIEW_PROVIDER == 'codex'
+        run: npm install -g @openai/codex
+
+      - name: Codex 인증 복원
+        if: env.REVIEW_PROVIDER == 'codex'
+        env:
+          CODEX_AUTH_JSON: ${{ secrets.CODEX_AUTH_JSON }}
+        run: |
+          if [ -z "$CODEX_AUTH_JSON" ]; then
+            echo "::error::CODEX_AUTH_JSON 시크릿이 비어 있다. .review/README.md 의 설정 절차를 볼 것."
+            exit 1
+          fi
+          mkdir -p ~/.codex
+          printf '%s' "$CODEX_AUTH_JSON" > ~/.codex/auth.json
+          chmod 600 ~/.codex/auth.json
+          # 자격증명을 keychain 이 아니라 파일에 두게 한다. CI 에는 keychain 이 없다.
+          echo 'cli_auth_credentials_store = "file"' > ~/.codex/config.toml
+          python3 -c "
+          import json, pathlib, sys
+          d = json.loads(pathlib.Path.home().joinpath('.codex/auth.json').read_text())
+          if d.get('auth_mode') != 'chatgpt' or not d.get('tokens', {}).get('refresh_token'):
+              sys.exit('auth.json 이 chatgpt 모드가 아니거나 refresh_token 이 없다.')
+          print('인증 복원 완료 · last_refresh =', d.get('last_refresh'))
+          "
+          # 실행 뒤 갱신 여부를 판단할 기준값
+          sha256sum ~/.codex/auth.json | cut -d' ' -f1 > /tmp/codex-auth-before.sha
+
+      # ── claude 경로 ───────────────────────────────────────────────
+      - name: Claude Code 설치
+        if: env.REVIEW_PROVIDER == 'claude'
+        run: npm install -g @anthropic-ai/claude-code
+
+      # ── 공통 ──────────────────────────────────────────────────────
+      - name: 오늘 소재 선정
+        env:
+          # 0 이면 새벽에 풀어 push 한 문제도 그날 아침 후보에 들어간다.
+          # 하루 묵히고 싶으면 리포지터리 변수에 24 를 넣는다.
+          REVIEW_MIN_AGE_HOURS: ${{ vars.REVIEW_MIN_AGE_HOURS || '0' }}
+        run: python3 scripts/pick_topic.py --provider "$REVIEW_PROVIDER"
+
+      - name: 복습 카드 생성
+        env:
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          CODEX_MODEL: ${{ vars.CODEX_MODEL || 'gpt-5.6-sol' }}
+          CLAUDE_MODEL: ${{ vars.CLAUDE_MODEL || 'fable' }}
+        run: bash scripts/generate.sh
+
+      - name: Discord 전송
+        env:
+          DISCORD_TIL_WEBHOOK: ${{ secrets.DISCORD_TIL_WEBHOOK }}
+        run: python3 scripts/post_discord.py
+
+      # Codex 는 last_refresh 가 8일쯤 지나면 실행 전에 토큰 묶음을 갱신한다.
+      # 러너는 매번 사라지므로 갱신분을 시크릿에 되써야 다음 실행이 이어진다.
+      # 되쓰기에 실패해도 카드는 이미 나갔으니 워크플로를 실패시키지 않는다.
+      - name: Codex 자격증명 되쓰기
+        if: always() && env.REVIEW_PROVIDER == 'codex'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GH_SECRETS_TOKEN }}
+        run: |
+          if [ ! -f ~/.codex/auth.json ]; then
+            echo "auth.json 이 없다. 건너뛴다."; exit 0
+          fi
+          if [ -z "${GH_TOKEN:-}" ]; then
+            echo "::warning::GH_SECRETS_TOKEN 이 없어 갱신된 자격증명을 저장하지 못한다. 토큰이 만료되면 재로그인이 필요하다."
+            exit 0
+          fi
+          AFTER=$(sha256sum ~/.codex/auth.json | cut -d' ' -f1)
+          BEFORE=$(cat /tmp/codex-auth-before.sha 2>/dev/null || echo none)
+          if [ "$AFTER" = "$BEFORE" ]; then
+            echo "자격증명 변화 없음. 되쓰지 않는다."
+            exit 0
+          fi
+          gh secret set CODEX_AUTH_JSON --repo "$GITHUB_REPOSITORY" < ~/.codex/auth.json
+          echo "갱신된 자격증명을 CODEX_AUTH_JSON 에 저장했다."
+
+      - name: 상태와 아카이브 커밋
+        run: |
+          DAY=$(TZ=Asia/Seoul date +%Y-%m-%d)
+          mkdir -p .review/archive
+          cp .review/today.json ".review/archive/$DAY.json"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .review/state.json .review/archive
+          if git diff --staged --quiet; then
+            echo "커밋할 변경 없음"
+          else
+            git commit -m "복습 카드 $DAY ($REVIEW_PROVIDER)"
+            git push
+          fi
+
+      - name: 실패 시 디버그 출력
+        if: failure()
+        run: |
+          echo "provider = $REVIEW_PROVIDER"
+          for f in .review/cli-output.log .review/cli-output.json .review/today.json; do
+            echo "--- $f ---"
+            head -c 1500 "$f" 2>/dev/null || echo "(없음)"
+            echo
+          done

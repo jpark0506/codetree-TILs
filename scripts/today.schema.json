@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "daily-review-card",
+  "description": "아침 복습 카드 한 장. codex exec --output-schema 로 응답 형태를 강제하는 데 쓴다.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "date",
+    "syntax",
+    "algo",
+    "optimized"
+  ],
+  "properties": {
+    "date": {
+      "type": "string",
+      "description": "YYYY-MM-DD"
+    },
+    "syntax": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "topic",
+        "headline",
+        "body",
+        "code",
+        "quiz",
+        "answer"
+      ],
+      "properties": {
+        "topic": {
+          "type": "string",
+          "description": "주제 이름. 50자 이내."
+        },
+        "headline": {
+          "type": "string",
+          "description": "한 문장 결론. 80자 이내."
+        },
+        "body": {
+          "type": "string",
+          "description": "왜 그런지. 불릿 2~3개. 380자 이내."
+        },
+        "code": {
+          "type": "string",
+          "description": "코드블록 하나. 전처리기 분기 금지. 15줄, 600자 이내."
+        },
+        "quiz": {
+          "type": "string",
+          "description": "확인 퀴즈 한 문제. 200자 이내."
+        },
+        "answer": {
+          "type": "string",
+          "description": "정답과 이유. 코드블록·|| 금지. 세 문장 이내, 380자 이내."
+        }
+      }
+    },
+    "algo": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "link",
+        "path",
+        "tag",
+        "summary",
+        "question",
+        "answer",
+        "code_review"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "문제 제목"
+        },
+        "link": {
+          "type": "string",
+          "description": "문제 URL. 없으면 빈 문자열."
+        },
+        "path": {
+          "type": "string",
+          "description": "풀이 파일 경로"
+        },
+        "tag": {
+          "type": "string",
+          "description": "유형 · 세부분류 · 난이도. 60자 이내."
+        },
+        "summary": {
+          "type": "string",
+          "description": "문제 요약. 300자 이내."
+        },
+        "question": {
+          "type": "string",
+          "description": "생각해볼 질문. 250자 이내."
+        },
+        "answer": {
+          "type": "string",
+          "description": "핵심 아이디어 + 복잡도. 코드블록·|| 금지. 세 문장 이내, 550자 이내."
+        },
+        "code_review": {
+          "type": "string",
+          "description": "번호 매긴 지적 1~3개. 항목당 두 줄. 480자 이내."
+        }
+      }
+    },
+    "optimized": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "verdict",
+        "idea",
+        "code",
+        "gain"
+      ],
+      "properties": {
+        "verdict": {
+          "type": "string",
+          "enum": [
+            "개선 여지 있음",
+            "상수만 개선",
+            "이미 최적"
+          ]
+        },
+        "idea": {
+          "type": "string",
+          "description": "무엇을 바꾸고 왜 되는가. 불릿 2~3개. 380자 이내."
+        },
+        "code": {
+          "type": "string",
+          "description": "C++ 코드블록 하나. 20줄, 600자 이내."
+        },
+        "gain": {
+          "type": "string",
+          "description": "무엇이 얼마나 좋아지는가 한 줄. 120자 이내."
+        }
+      }
+    }
+  }
+}

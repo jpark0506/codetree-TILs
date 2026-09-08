@@ -1,0 +1,48 @@
+"""C++ 문법 복습 커리큘럼.
+
+알고리즘 문제풀이에서 실제로 손에 걸리는 순서로 정렬했다.
+pick_topic.py 가 state.json 의 커서를 따라 하루 하나씩 순환한다.
+"""
+
+TOPICS = [
+    "cin/cout 과 scanf/printf, ios::sync_with_stdio(false) 와 cin.tie(nullptr) 가 실제로 무엇을 끄는가",
+    "vector<T> 의 size vs capacity — vector<int> v(n) / v.reserve(n) / v.resize(n) 의 차이",
+    "vector 의 삽입·삭제 비용과 반복자 무효화(iterator invalidation)",
+    "push_back vs emplace_back — 임시 객체가 몇 번 생기는가",
+    "std::string 기본기: substr, find, npos, +=, back/pop_back",
+    "문자열 파싱: stringstream, getline(ss, tok, ','), stoi/stod 와 예외",
+    "C 배열 vs std::array vs vector — 크기가 컴파일타임에 정해질 때 무엇을 쓰나",
+    "2차원 vector 선언: vector<vector<int>> g(n, vector<int>(m, 0)) 이 왜 이 모양인가",
+    "포인터와 참조의 차이, 그리고 함수 인자로 vector 를 넘길 때 & 를 빼먹으면 생기는 일",
+    "const 의 위치별 의미: const int*, int* const, const 멤버함수",
+    "auto 추론 규칙과 auto& / const auto& — 범위 기반 for 에서 값이 복사되는 함정",
+    "구조적 바인딩(structured binding): for (auto& [k, v] : mp)",
+    "std::pair 와 std::tuple, tie / make_pair / get<0>",
+    "struct 정의와 생성자, 그리고 정렬을 위한 operator< 오버로딩",
+    "std::sort 와 comparator — 람다로 넘기기, strict weak ordering 을 깨면 왜 죽는가",
+    "람다 표현식과 캡처 리스트 [&], [=], [this] 의 차이",
+    "std::map vs std::unordered_map — 정렬 여부, 복잡도, operator[] 가 원소를 만들어버리는 함정",
+    "std::set / multiset 과 lower_bound — 멤버 함수 버전을 써야 하는 이유",
+    "std::queue, std::deque, std::stack 어댑터의 실체",
+    "std::priority_queue 와 greater<> — 최소 힙 만들기",
+    "이진 탐색 3형제: binary_search, lower_bound, upper_bound 의 반환값",
+    "STL 알고리즘: accumulate, max_element, count_if, all_of, unique+erase 관용구",
+    "반복자(iterator) 카테고리와 begin/end, rbegin/rend",
+    "정수 오버플로: int 범위, long long, 1LL * a * b 관용구",
+    "나눗셈과 나머지: 음수에서 / 와 % 의 동작, 실수 비교에 == 를 쓰면 안 되는 이유",
+    "비트 연산: 1 << n, n & (n-1), __builtin_popcount, 비트마스크로 부분집합 순회",
+    "함수 오버로딩, 기본 인자, 그리고 참조 반환의 위험",
+    "재귀 함수와 스택 깊이, 전역 vs 지역 배열의 메모리 위치",
+    "static 지역 변수와 전역 변수의 초기화 시점",
+    "enum class 와 그냥 enum 의 차이",
+    "typedef vs using 별칭, 그리고 긴 STL 타입 줄이기",
+    "memset 이 왜 0 과 -1 에만 안전한가, std::fill 과의 차이",
+    "std::swap 과 이동 시맨틱(move semantics) 맛보기",
+    "클래스 기본: 접근 지정자, 생성자 초기화 리스트, 소멸자",
+    "연산자 오버로딩으로 좌표 구조체에 + 와 == 붙이기",
+    "템플릿 함수와 클래스 템플릿 기초",
+    "스마트 포인터 unique_ptr / shared_ptr — 문제풀이에서 필요할 때와 아닐 때",
+    "예외 처리 try/catch 와 at() vs operator[] 의 경계 검사",
+    "std::string_view 와 span — 복사 없이 들여다보기",
+    "헤더 include 와 using namespace std 의 실제 문제점",
+]
