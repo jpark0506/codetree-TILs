@@ -7,8 +7,12 @@
     "240305/트로미노/tromino.py": {
       "count": 1,
       "last_shown": "2026-09-09"
+    },
+    "240305/행복한 수열의 개수/number-of-happy-sequence.py": {
+      "count": 1,
+      "last_shown": "2026-09-09"
     }
   },
   "last_run": "2026-09-09",
-  "syntax_cursor": 2
+  "syntax_cursor": 3
 }
