@@ -19,8 +19,12 @@
     "240904/날짜 변경하여 출력 2/print-date-with-different-format-2.cpp": {
       "count": 1,
       "last_shown": "2026-09-11"
+    },
+    "240904/문자열 순서 바꾸기/change-order-of-strings.cpp": {
+      "count": 1,
+      "last_shown": "2026-09-12"
     }
   },
-  "last_run": "2026-09-11",
-  "syntax_cursor": 5
+  "last_run": "2026-09-12",
+  "syntax_cursor": 6
 }
