@@ -14,7 +14,7 @@ int main() {
 
     for(int i=0; i<2; i++){
         for(int j = 0; j< N; j++){
-            for(int k = 0; k < M; k++)[
+            for(int k = 0; k < M; k++){
                 int temp;
                 cin >> temp;
                 if(i == 0){
@@ -22,15 +22,21 @@ int main() {
                 }else{
                     arr2[j][k] = temp;
                     if(arr1[j][k] == temp){
-                        ans[j][k] = 1;
-                    }
-                    else{
                         ans[j][k] = 0;
                     }
-
+                    else{
+                        ans[j][k] = 1;
+                    }
                 }
-            ]
+            }
         }
+    }
+
+    for(int i=0; i<N; i++){
+        for(int j=0; j<M; j++){
+            cout << ans[i][j] << " ";
+        }
+        cout << endl;
     }
 
 
