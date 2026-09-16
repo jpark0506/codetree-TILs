@@ -15,9 +15,8 @@ int main() {
             arr[i][j] = temp;
         }
     }
-
     cout << fixed;
-    cout.precision(2);
+    cout.precision(1);
 
     // 가로 평균
     for(int i=0; i<2; i++){
@@ -26,7 +25,7 @@ int main() {
             avg += arr[i][j];
         }
         
-        cout << (double)(avg / 4) << " ";
+        cout << (double)avg / 4 << " ";
     }
     cout << endl;
 
@@ -37,12 +36,12 @@ int main() {
             avg += arr[j][i];
             avg_all += arr[j][i];
         }
-        cout << (double)(avg / 2) << " ";
+        cout << (double)avg / 2 << " ";
     }
     
     cout << endl;
 
-    cout << (double)(avg_all / 8); 
+    cout << (double)avg_all / 8; 
 
     return 0;
 }
