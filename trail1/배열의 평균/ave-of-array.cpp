@@ -17,7 +17,7 @@ int main() {
     }
 
     cout << fixed;
-    cout.precision(1);
+    cout.precision(2);
 
     // 가로 평균
     for(int i=0; i<2; i++){
