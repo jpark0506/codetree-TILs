@@ -9,7 +9,7 @@ int main() {
 
     cin >> str;
 
-    str.erase(2,1);
+    str.erase(1,1);
 
     str.erase(str.length() - 2, 1);
 
