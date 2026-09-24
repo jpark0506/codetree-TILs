@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 using namespace std;
 
 int main() {
@@ -6,13 +7,11 @@ int main() {
     int N, M;
     cin >> N >> M;
 
-    int arr[N][N] = {0,};
+    vector<vector<int>> arr(N, vector<int>(N, 0));
 
     for(int i = 0; i<M; i++){
         int k,h;
-
         cin >> k >> h;
-
         arr[k-1][h-1] = 1;
     }
 
