@@ -17,8 +17,8 @@ int main() {
 
     int max = 0;
     for (int i = 0; i < N * 2; i++) {
-        if (max < nums[i] + nums[2 * N - i]){
-            max = nums[i] + nums[2 * N - i];
+        if (max < nums[i] + nums[2 * N - 1 - i]){
+            max = nums[i] + nums[2 * N - 1 - i];
         }
     }
 
