@@ -16,7 +16,7 @@ int main() {
     sort(nums, nums + 2 * N);
 
     int max = 0;
-    for (int i = 0; i <= N * 2; i++) {
+    for (int i = 0; i < N * 2; i++) {
         if (max < nums[i] + nums[2 * N - i]){
             max = nums[i] + nums[2 * N - i];
         }
