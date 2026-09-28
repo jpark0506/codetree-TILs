@@ -15,7 +15,7 @@ int main() {
 
     sort(nums, nums + N);
 
-    cout << nums[k] << endl;
+    cout << nums[k-1] << endl;
 
     // Please write your code here.
 
