@@ -47,12 +47,20 @@ int main() {
             break;
         }
         
-        if(cday <= month[cmonth]){
-            if(flag){
-                cday++;
+        if(cday < month[cmonth]){
+            if(cday == 1){
+                if(!flag){
+                    cday == month[--cmonth];
+                }else{
+                    cday++;
+                }
             }else{
-                cday--;
-            }
+                if(flag){
+                    cday++;
+                }else{
+                    cday--;
+                }
+            }            
         }else{
             if(cday == month[cmonth]){
                 if(flag){
@@ -62,18 +70,14 @@ int main() {
                     cday--;
                 }
             }
-            if(cday == 1){
-                if(!flag){
-                    cday == month[cmonth - 1];
-                    cmonth--;
-                }else{
-                    cday++;
-                }
-            }
         }
-        ansIndex = ansIndex % 7;
         if(flag){
-            ansIndex++;
+            if(ansIndex == 6){
+                ansIndex = 0;
+            }else{
+                ansIndex++;
+            }
+            
         }else{
             if(ansIndex == 0){
                 ansIndex = 6;
