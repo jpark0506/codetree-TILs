@@ -43,7 +43,7 @@ int main() {
 
     while(true){
 
-        if(cmonth == tmonth && cday == tmonth){
+        if(cmonth == tmonth && cday == tday){
             break;
         }
         
