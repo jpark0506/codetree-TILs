@@ -11,6 +11,11 @@ int main() {
 
     vector<int> v;
 
+    if(n == 0){
+        cout << 0;
+        return 0;
+    }
+
 
     while(n != 0){
         if(n % 2 == 0){
@@ -18,9 +23,6 @@ int main() {
             n /= 2;
         }else if(n % 2 == 1){
             n = (n-1) / 2;
-            if(n == 0){
-                break;
-            }
             v.push_back(1);
         }
     }
