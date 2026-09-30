@@ -58,12 +58,16 @@ int main() {
                 if(flag){
                     cday = 1;
                     cmonth++;
+                }else{
+                    cday--;
                 }
             }
             if(cday == 1){
                 if(!flag){
                     cday == month[cmonth - 1];
                     cmonth--;
+                }else{
+                    cday++;
                 }
             }
         }
