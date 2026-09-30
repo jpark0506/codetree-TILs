@@ -54,11 +54,17 @@ int main() {
                 cday--;
             }
         }else{
-            cday = cday % month[cmonth];
-            if(flag){
-                cmonth++;
-            }else{
-                cmonth--;
+            if(cday == month[cmonth]){
+                if(flag){
+                    cday = 1;
+                    cmonth++;
+                }
+            }
+            if(cday == 1){
+                if(!flag){
+                    cday == month[cmonth - 1];
+                    cmonth--;
+                }
             }
         }
         ansIndex = ansIndex % 7;
