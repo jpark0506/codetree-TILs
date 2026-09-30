@@ -48,7 +48,11 @@ int main() {
         }
         
         if(cday <= month[cmonth]){
-            cday++;
+            if(flag){
+                cday++
+            }else{
+                cday--;
+            }
         }else{
             cday = cday % month[cmonth];
             if(flag){
@@ -66,7 +70,6 @@ int main() {
             }else{
                 ansIndex--;
             }
-            
         }
     };
 
