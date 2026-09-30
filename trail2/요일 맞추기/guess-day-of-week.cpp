@@ -24,25 +24,50 @@ int main() {
     int cmonth = m1;
     int cday = d1;
 
+    int tmonth = m2;
+    int tday = d2;
+
     int ansIndex = 0;
+
+    bool flag = true;
+
+    if(cmonth > tmonth){
+        flag = false;
+    }else{
+        if(cmonth == tmonth){
+            if(cday > tday){
+                flag = false;
+            }
+        }
+    }
 
     while(true){
 
-        if(cmonth == m2 && cday == d2){
+        if(cmonth == tmonth && cday == tmonth){
             break;
         }
         
         if(cday <= month[cmonth]){
             cday++;
         }else{
-            cday = 1;
-            if(cmonth == 12){
-                cmonth = 1;
+            cday = cday % month[cmonth];
+            if(flag){
+                cmonth++;
             }else{
-                cmonth ++;
+                cmonth--;
             }
         }
-        ansIndex = (ansIndex % 7) +1;
+        ansIndex = ansIndex % 7;
+        if(flag){
+            ansIndex++;
+        }else{
+            if(ansIndex == 0){
+                ansIndex = 6;
+            }else{
+                ansIndex--;
+            }
+            
+        }
     };
 
     cout << date[ansIndex];
