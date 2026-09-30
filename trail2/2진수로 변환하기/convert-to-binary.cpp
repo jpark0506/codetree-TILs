@@ -18,6 +18,9 @@ int main() {
             n /= 2;
         }else if(n % 2 == 1){
             n = (n-1) / 2;
+            if(n == 0){
+                break;
+            }
             v.push_back(1);
         }
     }
