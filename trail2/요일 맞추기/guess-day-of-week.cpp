@@ -35,14 +35,14 @@ int main() {
         if(cday <= month[cmonth]){
             cday++;
         }else{
-            cday = cday % month[cmonth];
+            cday = 1;
             if(cmonth == 12){
                 cmonth = 1;
             }else{
                 cmonth ++;
             }
         }
-        ansIndex = ansIndex++ % 7;
+        ansIndex = (ansIndex % 7) +1;
     };
 
     cout << date[ansIndex];
