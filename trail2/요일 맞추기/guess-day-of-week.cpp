@@ -50,7 +50,7 @@ int main() {
         if(cday < month[cmonth]){
             if(cday == 1){
                 if(!flag){
-                    cday == month[--cmonth];
+                    cday = month[--cmonth];
                 }else{
                     cday++;
                 }
