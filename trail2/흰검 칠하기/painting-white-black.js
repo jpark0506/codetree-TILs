@@ -18,14 +18,23 @@ for(let [move, cmd] of commands){
     if(cmd === 'R'){
         for(let i = 0; i < move; i++){
             arr[coord + i] = arr[coord + i] + 1;
-            color[coord + i] = 'B';
+            if(arr[coord + i] == 4){
+                color[coord + i] = 'G';
+            }else if(arr[coord + i] < 4){
+                color[coord + i] = 'B';
+            }
+            
         }
         coord = coord + move - 1;
     }
     if(cmd === 'L'){
         for(let i = 0; i < move; i++){
             arr[coord - i] = arr[coord - i] + 1;
-            color[coord - i] = 'W';
+            if(arr[coord - i] == 4){
+                color[coord - i] = 'G';
+            }else if(arr[coord - i] < 4){
+                color[coord - i] = 'W';
+            }
         }
         coord = coord - move + 1;
     }
