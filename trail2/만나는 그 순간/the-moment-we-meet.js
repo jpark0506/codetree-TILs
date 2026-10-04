@@ -37,13 +37,15 @@ let t = 0;
 
 while(true){
 
-    if((noNextA && noNextB)){
-        console.log(-1);
-        break;
-    }
+
 
     if(coordA === coordB && t!==0){
         console.log(t);
+        break;
+    }
+
+    if(noNextA && noNextB){
+        console.log(-1);
         break;
     }
 
@@ -57,7 +59,6 @@ while(true){
     }
 
     if(rA.t === 0){
-        
         let indexT = ++rA.index;
         if(movesA.length > indexT){
             rA = {
@@ -68,7 +69,6 @@ while(true){
         }else{
             noNextA = true;
         }
-        
     }
 
     rB.t--;
@@ -91,7 +91,6 @@ while(true){
         }else{
             noNextB = true;
         }
-
     }
 
     t++;
