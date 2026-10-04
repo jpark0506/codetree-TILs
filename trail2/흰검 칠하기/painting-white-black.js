@@ -18,7 +18,7 @@ for(let [move, cmd] of commands){
     if(cmd === 'R'){
         for(let i = 0; i < move; i++){
             arr[coord + i] = arr[coord + i] + 1;
-            if(arr[coord + i] == 4){
+            if(arr[coord + i] === 4){
                 color[coord + i] = 'G';
             }else if(arr[coord + i] < 4){
                 color[coord + i] = 'B';
@@ -30,7 +30,7 @@ for(let [move, cmd] of commands){
     if(cmd === 'L'){
         for(let i = 0; i < move; i++){
             arr[coord - i] = arr[coord - i] + 1;
-            if(arr[coord - i] == 4){
+            if(arr[coord - i] === 4){
                 color[coord - i] = 'G';
             }else if(arr[coord - i] < 4){
                 color[coord - i] = 'W';
@@ -42,16 +42,16 @@ for(let [move, cmd] of commands){
 
 
 
-const gray = arr.filter((v) => {
-    return v >= 4;
+const gray = arr.filter((v, index) => {
+    return color[index] === 'G';
 }).length;
 
 const white = arr.filter((v, index) => {
-    return v < 4 && color[index] === 'W';
+    return color[index] === 'W';
 }).length;
 
 const black = arr.filter((v, index) => {
-    return v < 4 && color[index] === 'B';
+    return  color[index] === 'B';
 }).length;
 
 console.log(white, black, gray)
