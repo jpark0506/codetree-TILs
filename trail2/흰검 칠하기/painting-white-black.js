@@ -9,32 +9,35 @@ const commands = input.slice(1).map(line => line.split(' '));
 const arr = Array(1000 * 100 * 2 + 1).fill(0);
 const color = Array(1000 * 100 * 2 + 1).fill('');
 
+const barr = Array(1000 * 100 * 2 + 1).fill(0);
+const warr = Array(1000 * 100 * 2 + 1).fill(0);
+
 let coord = 1000 * 100 + 1;
 
 // 표시하고 이동.
 for(let [move, cmd] of commands){
     
     move = Number(move);
+    
     if(cmd === 'R'){
         for(let i = 0; i < move; i++){
-            arr[coord + i] = arr[coord + i] + 1;
-            if(arr[coord + i] === 4){
-                color[coord + i] = 'G';
-            }else if(arr[coord + i] < 4){
+                barr[coord + i]++;
                 color[coord + i] = 'B';
+                if(barr[coord + i] >= 2 && warr[coord + i] >= 2){
+                    color[coord + i] = 'G';
+                }
             }
-            
-        }
         coord = coord + move - 1;
     }
     if(cmd === 'L'){
         for(let i = 0; i < move; i++){
-            arr[coord - i] = arr[coord - i] + 1;
-            if(arr[coord - i] === 4){
+            warr[coord - i]++;
+            color[coord - i] = 'W';
+            if(barr[coord - i] >= 2 && warr[coord - i] >= 2){
                 color[coord - i] = 'G';
-            }else if(arr[coord - i] < 4){
-                color[coord - i] = 'W';
+                
             }
+            
         }
         coord = coord - move + 1;
     }
