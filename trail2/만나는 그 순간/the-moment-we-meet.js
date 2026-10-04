@@ -30,9 +30,17 @@ let rB = {
     dir : movesB[0][0]
 }
 
+let noNextA = false;
+let noNextB = false;
+
 let t = 0;
 
 while(true){
+
+    if((noNextA && noNextB)){
+        console.log(-1);
+        break;
+    }
 
     if(coordA === coordB && t!==0){
         console.log(t);
@@ -57,6 +65,8 @@ while(true){
                 t: movesA[indexT][1],
                 dir:movesA[indexT][0],
             }
+        }else{
+            noNextA = true;
         }
         
     }
@@ -78,6 +88,8 @@ while(true){
                 t: movesB[indexTB][1],
                 dir:movesB[indexTB][0],
             }
+        }else{
+            noNextB = true;
         }
 
     }
