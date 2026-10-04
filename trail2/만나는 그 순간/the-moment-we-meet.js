@@ -49,12 +49,16 @@ while(true){
     }
 
     if(rA.t === 0){
+        
         let indexT = ++rA.index;
-        rA = {
-            index: indexT,
-            t: movesA[indexT][1],
-            dir:movesA[indexT][0],
+        if(movesA.length > indexT){
+            rA = {
+                index: indexT,
+                t: movesA[indexT][1],
+                dir:movesA[indexT][0],
+            }
         }
+        
     }
 
     rB.t--;
@@ -68,11 +72,14 @@ while(true){
 
     if(rB.t === 0){
         let indexTB = ++rB.index;
-        rB = {
-            index: indexTB,
-            t: movesB[indexTB][1],
-            dir:movesB[indexTB][0],
+        if(movesB.length > indexTB){
+            rB = {
+                index: indexTB,
+                t: movesB[indexTB][1],
+                dir:movesB[indexTB][0],
+            }
         }
+
     }
 
     t++;
