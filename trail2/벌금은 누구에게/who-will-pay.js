@@ -12,5 +12,6 @@ for(let b of p){
     s[b]++;
     if(s[b] === k){
         console.log(b);
+        break;
     }
 }
