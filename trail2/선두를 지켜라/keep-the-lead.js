@@ -6,9 +6,8 @@ const aData = input.slice(1, n + 1).map(line => line.split(" ").map(Number));
 const bData = input.slice(n + 1, n + 1 + m).map(line => line.split(" ").map(Number));
 
 const maxTA = aData.reduce((acc, cur) => acc + cur[1], 0);
-const maxTB = aData.reduce((acc, cur) => acc + cur[1], 0);
 
-const max = maxTA > maxTB ? maxTA : maxTB;
+const max = maxTA;
 
 let changed = 0;
 // 선두
