@@ -8,10 +8,19 @@ const p = input.slice(1, m + 1).map(Number);
 
 const s = Array(n+1).fill(0);
 
+let f = false;
+
 for(let b of p){
     s[b]++;
     if(s[b] === k){
+
+        f = true;
+
         console.log(b);
+        
         break;
     }
 }
+
+if(!f)
+    console.log(-1);
