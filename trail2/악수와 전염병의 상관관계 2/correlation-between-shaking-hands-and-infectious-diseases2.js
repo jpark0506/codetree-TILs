@@ -24,7 +24,8 @@ for(const { person1, person2 } of shakes){
     if(isCon(person1)){
         concount[person1]--;
         newCon.push(person2);
-    }else if(isCon(person2)){
+    }
+    if(isCon(person2)){
         concount[person2]--;
         newCon.push(person1);
     }
