@@ -80,9 +80,9 @@ const nextDir = (cx, cy, e) => {
 }
 
 const findKpos = (n, startNum) => {
-    const myun = parseInt(startNum / n);
+    const myun = parseInt((startNum - 1) / n);
 
-    const startpos = startNum % n;
+    const startpos = (startNum - 1) % n + 1;
 
     if(myun === 0){
         return [0, startpos, 1];
@@ -103,17 +103,12 @@ let cnt = 0;
 
 let [sx, sy, dir] = findKpos(n, startNum);
 
-// console.log({
-//     sx, sy, dir
-// })
 
 while(true){
 
     const [nx, ny] = [sx + dx[dir], sy + dy[dir]];
 
     const ndir = nextDir(dx[dir], dy[dir], map[nx][ny]);
-
-    //console.log({nx, ny, ndir, e : map})
 
     if(ndir === -1){
         break;
