@@ -43,44 +43,46 @@ const rotateDir = (cx, cy, isClockwise) => {
     if(isClockwise){
         return (index + 1) % 4;
     }else{
-        return (index - 1) % 4;
+        return (index + 3) % 4;
     }
 }
 
 const nextDir = (cx, cy, e) => {
-    try{
+    try {
+        if(e === '\\'){
+            let index = findIndex(cx, cy);
+            // 가로 -> 시계
+            // 세로 -> 반시계
+            if(index % 2 === 0){
+                return rotateDir(cx, cy, true);
+            }else{
+                return rotateDir(cx, cy, false);
+            }
 
-    if(e === '\\'){
-        let index = findIndex(cx, cy);
-        // 가로 -> 시계
-        // 세로 -> 반시계
-        if(index % 2 === 0){
-            return rotateDir(cx, cy, true);
-        }else{
-            return rotateDir(cx, cy, false);
         }
 
-    }
-
-    if(e === '/'){
-        let index = findIndex(cx, cy);
-        // 가로 -> 반시계
-        // 세로 -> 시계
-        if(index % 2 === 0){
-            return rotateDir(cx, cy, false);
-        }else{
-            return rotateDir(cx, cy, true);
+        if(e === '/'){
+            let index = findIndex(cx, cy);
+            // 가로 -> 반시계
+            // 세로 -> 시계
+            if(index % 2 === 0){
+                return rotateDir(cx, cy, false);
+            }else{
+                return rotateDir(cx, cy, true);
+            }
         }
-    }
 
-    return -1;
-}catch(e){
-    console.log(cx, cy);
-}
+        return -1;
+
+    }catch(e){
+        console.log(cx, cy);
+    }
 }
 
 const findKpos = (n, startNum) => {
     const myun = parseInt((startNum - 1) / n);
+
+    // console.log({myun})
 
     const startpos = (startNum - 1) % n + 1;
 
@@ -103,12 +105,19 @@ let cnt = 0;
 
 let [sx, sy, dir] = findKpos(n, startNum);
 
+// console.log({
+//     sx, sy, dir
+// })
 
 while(true){
 
     const [nx, ny] = [sx + dx[dir], sy + dy[dir]];
 
+
     const ndir = nextDir(dx[dir], dy[dir], map[nx][ny]);
+
+
+    // console.log({nx, ny, e : map[nx][ny], ndir})
 
     if(ndir === -1){
         break;
