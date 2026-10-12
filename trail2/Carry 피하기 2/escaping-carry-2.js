@@ -23,14 +23,10 @@ const checkHasCarry = (a, b, c) => {
         let rrb = rb[i] ?? 0;
         let rrc = rc[i] ?? 0;
 
-        if(rra + rrb + rrc > 10){
+        if(rra + rrb + rrc >= 10){
             return true;
         }
     }
-
-    // console.log({
-    //     a, b, c
-    // })
 
     return false;
 }
