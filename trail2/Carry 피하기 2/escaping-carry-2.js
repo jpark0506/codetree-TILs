@@ -16,8 +16,6 @@ const checkHasCarry = (a, b, c) => {
         return arr.map(Number).reverse();
     })
 
-    
-
     const max = Math.max(ra.length, rb.length, rc.length);
 
     for(let i = 0; i < max; i++){
@@ -29,6 +27,10 @@ const checkHasCarry = (a, b, c) => {
             return true;
         }
     }
+
+    console.log({
+        a, b, c
+    })
 
     return false;
 }
