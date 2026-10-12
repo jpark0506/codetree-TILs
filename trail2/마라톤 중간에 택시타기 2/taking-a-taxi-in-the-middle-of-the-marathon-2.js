@@ -27,7 +27,7 @@ const cal = (index) => {
     return sum;
 }
 
-let min = 100000;
+let min = 100000000;
 
 for(let i = 1; i < n - 1; i++){
     let r = cal(i);
