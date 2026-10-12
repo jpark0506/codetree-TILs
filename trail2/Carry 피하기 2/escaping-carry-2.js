@@ -28,9 +28,9 @@ const checkHasCarry = (a, b, c) => {
         }
     }
 
-    console.log({
-        a, b, c
-    })
+    // console.log({
+    //     a, b, c
+    // })
 
     return false;
 }
