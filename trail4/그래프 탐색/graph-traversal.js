@@ -37,13 +37,15 @@ function dfs(){
     }
 
     let top = q.pop();
+    visited(top);
+    cnt++;
 
     for(const ne of graph[top]){
+
         if(!hasVisited(ne)){
-            visited(ne);
             q.push(ne);
             dfs();
-            cnt++;
+            
         }
     }
 
