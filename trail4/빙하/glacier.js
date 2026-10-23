@@ -7,7 +7,7 @@ const a = input.slice(1, 1 + n).map(line => line.split(' ').map(Number));
 let outerW = new Set();
 const innerW = new Set();
 const ice = new Set();
-const meltableIce = new Set();
+let meltableIce = new Set();
 
 const key = (x, y) => `${x},${y}`;
 
@@ -16,7 +16,7 @@ const dy = [1, -1, 0, 0];
 
 const visited = new Set();
 const inRange = (x, y) => 0 <= x && x < n && 0 <= y && y < m;
-const isIce = (x, y) => a[x]?.[y] === 1;
+const isIce = (x, y) => a[x][y] === 1;
 const hasVisited = (x, y) => visited.has(key(x, y));
 const canGo = (x, y) => inRange(x, y) && !isIce(x, y) && !hasVisited(x, y);
 
@@ -39,13 +39,13 @@ function bfs(x, y, callback) {
     while (q.length !== 0) {
         let [tx, ty] = q.shift();
 
-        console.log({ tx, ty, a })
-
         for (let i = 0; i < 4; i++) {
             const [nx, ny] = [tx + dx[i], ty + dy[i]];
 
-            if(isIce(nx,ny)){
-                meltableIce.add(key(nx,ny));
+            if(inRange(nx,ny)){
+                if(isIce(nx,ny)){
+                    meltableIce.add(key(nx,ny));
+                }
             }
 
             if (canGo(nx, ny)) {
@@ -81,9 +81,11 @@ function melt(x, y) {
                 // 이미 녹아버린 얼음
                 tempMeltableIce.delete(nc);
             }
-            if(a[ncoord[0]][ncoord[1]] === 1){
-                tempMeltableIce.add(nc);
-            }
+            
+        }
+
+        if(a[ncoord[0]][ncoord[1]] === 1){
+            tempMeltableIce.add(nc);
         }
     }
     return [x, y, isMeletable, tempOuterW, tempMeltableIce];
@@ -105,7 +107,7 @@ while (ice.size !== 0) {
     meltableIce.clear();
     for (let i = 0; i < arr.length; i++) {
         const [x, y, isMeletable, tempOuterW, tempMeltableIce] = arr[i];
-        meltableIce.add(...tempMeltableIce);
+        meltableIce = mergeSet(meltableIce, tempMeltableIce);
         if (isMeletable) {
             outerW = mergeSet(outerW, tempOuterW);
             ice.delete(key(x, y));
