@@ -20,8 +20,15 @@ for(let i = 2; i < n + 1; i++){
     // dp[i] 공간을 만들어준다.
     dp.push(0);
     for(let j = 0; j < i; j++){
+        let k = i - j - 1;
         
-        dp[i] += dp[j] + dp[i - j - 1];
+        if(j === k){
+            dp[i] += dp[j];
+        }else{
+            dp[i] += dp[j] + dp[k];
+        }
+        
+        
         
     }
 }
