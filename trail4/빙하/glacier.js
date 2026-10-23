@@ -7,6 +7,7 @@ const a = input.slice(1, 1 + n).map(line => line.split(' ').map(Number));
 let outerW = new Set();
 const innerW = new Set();
 const ice = new Set();
+const meltableIce = new Set();
 
 const key = (x, y) => `${x},${y}`;
 
@@ -15,7 +16,7 @@ const dy = [1, -1, 0, 0];
 
 const visited = new Set();
 const inRange = (x, y) => 0 <= x && x < n && 0 <= y && y < m;
-const isIce = (x, y) => a[x][y] === 1;
+const isIce = (x, y) => a[x]?.[y] === 1;
 const hasVisited = (x, y) => visited.has(key(x, y));
 const canGo = (x, y) => inRange(x, y) && !isIce(x, y) && !hasVisited(x, y);
 
@@ -38,9 +39,13 @@ function bfs(x, y, callback) {
     while (q.length !== 0) {
         let [tx, ty] = q.shift();
 
-
         for (let i = 0; i < 4; i++) {
             const [nx, ny] = [tx + dx[i], ty + dy[i]];
+
+            if(isIce(nx,ny)){
+                meltableIce.add(key(nx,ny));
+            }
+
             if (canGo(nx, ny)) {
                 visited.add(key(nx, ny));
                 q.push([nx, ny]);
@@ -61,18 +66,25 @@ function melt(x, y) {
     let isMeletable = false;
 
     const tempOuterW = new Set();
+    const tempMeltableIce = new Set();
     for (let i = 0; i < 4; i++) {
-        const nc = key(x + dx[i], y + dy[i]);
+        const ncoord = [x + dx[i], y + dy[i]]
+        const nc = key(...ncoord);
         if (outerW.has(nc)) {
             isMeletable = true;
             tempOuterW.add(key(x, y));
             if (innerW.has(nc)) {
                 tempOuterW.add(nc);
                 innerW.delete(nc);
+                // 이미 녹아버린 얼음
+                tempMeltableIce.delete(nc);
+            }
+            if(a[ncoord[0]][ncoord[1]] === 1){
+                tempMeltableIce.add(nc);
             }
         }
     }
-    return [x, y, isMeletable, tempOuterW];
+    return [x, y, isMeletable, tempOuterW, tempMeltableIce];
 }
 
 const mergeSet = (set, mSet) => new Set([...set, ...mSet]);
@@ -84,14 +96,14 @@ while (ice.size !== 0) {
     lastIceCnt = ice.size;
 
     const arr = [];
-    for (const pos of [...ice]) {
+    for (const pos of [...meltableIce]) {
         const [x, y] = pos.split(',').map(Number);
         arr.push(melt(x, y));
     }
-
+    meltableIce.clear();
     for (let i = 0; i < arr.length; i++) {
-        const [x, y, isMeletable, tempOuterW] = arr[i];
-
+        const [x, y, isMeletable, tempOuterW, tempMeltableIce] = arr[i];
+        meltableIce.add(...tempMeltableIce);
         if (isMeletable) {
             outerW = mergeSet(outerW, tempOuterW);
             ice.delete(key(x, y));
