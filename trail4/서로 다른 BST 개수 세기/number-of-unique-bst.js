@@ -21,6 +21,10 @@ for(let i = 2; i < n + 1; i++){
     dp.push(0);
     for(let j = 0; j < i; j++){
         let k = i - j - 1;
+
+        console.log({
+            j, k
+        })
         
         if(j === k){
             dp[i] += dp[j];
