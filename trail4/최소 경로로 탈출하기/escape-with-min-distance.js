@@ -23,6 +23,8 @@ const hasSnake = (x, y) => grid[x][y] === 0;
 const hasVisited = (x,y) => visited[x][y] === 1;
 const canGo = (x, y) => inRange(x, y) && !hasSnake(x,y) && !hasVisited(x,y);
 
+let flag = false;
+
 const bfs = (x, y) => {
     let q = [];
 
@@ -34,19 +36,23 @@ const bfs = (x, y) => {
         let top = q.shift();
         const [tx, ty] = top;
 
+        if(tx === n-1 && ty === m-1){
+            flag = true;
+        }
+
         for(let i = 0; i < 4; i++){
             const [nx, ny] = [tx + dx[i], ty + dy[i]];
             if(canGo(nx, ny)){
                 visited[nx][ny] = 1;
-                step[nx][ny] = step[nx][ny] !== 0 ? Math.min(step[tx][ty] + 1, step[nx][ny]) : step[tx][ty] + 1;
+                step[nx][ny] = step[tx][ty] + 1;
                 q.push([nx, ny]);
             }
-
         }
-
     }
+
+    
 
 }
 bfs(0,0);
 
-console.log(step[n-1][m-1]);
+console.log(flag ? step[n-1][m-1] : -1);
