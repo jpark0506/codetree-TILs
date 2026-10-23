@@ -38,7 +38,7 @@ const bfs = (x, y) => {
             const [nx, ny] = [tx + dx[i], ty + dy[i]];
             if(canGo(nx, ny)){
                 visited[nx][ny] = 1;
-                step[nx][ny] = step[tx][ty] + 1;
+                step[nx][ny] = step[nx][ny] !== 0 ? Math.min(step[tx][ty] + 1, step[nx][ny]) : step[tx][ty] + 1;
                 q.push([nx, ny]);
             }
 
