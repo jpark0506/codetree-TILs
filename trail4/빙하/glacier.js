@@ -39,6 +39,8 @@ function bfs(x, y, callback) {
     while (q.length !== 0) {
         let [tx, ty] = q.shift();
 
+        console.log({ tx, ty, a })
+
         for (let i = 0; i < 4; i++) {
             const [nx, ny] = [tx + dx[i], ty + dy[i]];
 
