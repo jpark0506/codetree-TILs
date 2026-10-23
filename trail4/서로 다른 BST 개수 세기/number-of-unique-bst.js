@@ -19,22 +19,28 @@ if(n < 2){
 for(let i = 2; i < n + 1; i++){
     // dp[i] 공간을 만들어준다.
     dp.push(0);
+
     for(let j = 0; j < i; j++){
         let k = i - j - 1;
 
         console.log({
-            j, k
+            j, k,
+            dpj : dp[j],
+            dpk : dp[k]
         })
         
         if(j === k){
             dp[i] += dp[j];
         }else{
-            dp[i] += dp[j] + dp[k];
+            dp[i] += (dp[j] === 0 ? 1 : dp[j]) * (dp[k] === 0 ? 1 : dp[j]);
         }
         
         
         
     }
+    console.log({
+        dpi : dp[i]
+    })
 }
 
 console.log(dp[n])
